@@ -1,0 +1,45 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background: #f9f9f9;
+}
+
+form {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+input, button {
+  padding: 10px;
+  font-size: 16px;
+}
+
+#quotationOutput {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  width: 794px;   /* A4 width at 96 DPI */
+  height: 1123px; /* A4 height at 96 DPI */
+  padding: 40px;
+  box-sizing: border-box;
+  background: white url('/letterhead.png') no-repeat center top;
+  background-size: cover;
+}
+
+#quotationOutput div {
+  margin-top: 150px; /* Adjust based on your header design */
+}
+
+
+#pdfContainer {
+  margin-top: 20px;
+}
+
+.buttons {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
