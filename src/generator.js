@@ -1,16 +1,11 @@
 import jsPDF from "jspdf";
 
 export async function generateQuotationPDF({
-  customerName,
-  bank,
+  companyname,
+  address,
   productName,
   productPrice,
-  downpayment,
-  tenure,
 }) {
-  const financeAmount = productPrice - downpayment;
-  const emiTerm = `${tenure} Months`;
-
   const pdf = new jsPDF("portrait", "pt", "a4");
   const pageWidth = 595.28;
   const pageHeight = 841.89;
@@ -39,68 +34,83 @@ export async function generateQuotationPDF({
   pdf.setFont(undefined, "bold");
   pdf.text("To,", 50, 160);
   pdf.setFont(undefined, "normal");
-  pdf.text(`${bank} Bank`, 50, 180);
+  pdf.text(`${companyname}`, 50, 180);
+  pdf.text(`${address}`, 50, 200);
 
-  // Format today's date as "16 May 2025"
+  // Date
   const today = new Date();
   const day = today.getDate();
   const month = today.toLocaleString("default", { month: "long" });
   const year = today.getFullYear();
   const formattedDate = `${day} ${month} ${year}`;
-
   pdf.text(formattedDate, 460, 160);
 
+  // Product name in subject (wrap long product name)
   pdf.setFont(undefined, "bold");
-  pdf.text(`RE: Quotation for ${productName}`, 50, 210);
+  const subjectText = `RE: Quotation for ${productName}`;
+  const wrappedSubject = pdf.splitTextToSize(subjectText, 500);
+  pdf.text(wrappedSubject, 50, 240);
 
-  pdf.setFont(undefined, "bold");
-  pdf.text("To whom it may concern,", 50, 240);
+  // Calculate the Y position after wrapped subject
+  const subjectHeight = wrappedSubject.length * 15;
+  let currentY = 240 + subjectHeight + 30;
+
+  pdf.text("To whom it may concern,", 50, currentY);
+  currentY += 30;
 
   pdf.setFont(undefined, "normal");
-  const paragraph = `We, Sinja Commerce Pvt. Ltd., would like to inform you that our customer, Mr./Ms. ${customerName}, has requested to avail the EMI facility provided by your esteemed bank for the following products purchased from us:`;
-  pdf.text(pdf.splitTextToSize(paragraph, 500), 50, 270);
+  const paragraph = `The requested quotation as per our conversation is provided as follows:`;
+  const wrappedPara = pdf.splitTextToSize(paragraph, 500);
+  pdf.text(wrappedPara, 50, currentY);
+  currentY += wrappedPara.length * 15 + 20;
 
   // ---------------------------
   // Table Content
   // ---------------------------
-  const tableTop = 340;
-  const rowHeight = 40;
-
-  pdf.setDrawColor(0);
-  pdf.setLineWidth(1);
-  pdf.setFont(undefined, "bold");
+  const col1Width = 220;
+  const col2Width = 275;
+  let y = currentY;
 
   const tableData = [
     ["Product Name", productName],
-    ["Product Amount", productPrice.toString()],
-    ["Finance Amount", financeAmount.toString()],
-    ["EMI Term", emiTerm],
+    ["Product Amount (Including VAT)", productPrice.toString()],
   ];
 
-  tableData.forEach((row, i) => {
-    const y = tableTop + i * rowHeight;
-    pdf.rect(50, y, 220, rowHeight);
-    pdf.rect(270, y, 275, rowHeight);
-    pdf.text(row[0], 60, y + 25);
-    pdf.setFont(undefined, "normal");
-    pdf.text(row[1], 280, y + 25);
+  pdf.setFont(undefined, "bold");
+
+  tableData.forEach((row) => {
     pdf.setFont(undefined, "bold");
+    const wrappedCol2 = pdf.splitTextToSize(row[1], col2Width - 20);
+    const rowHeight = Math.max(40, wrappedCol2.length * 15 + 10);
+
+    // Draw cells
+    pdf.rect(50, y, col1Width, rowHeight);
+    pdf.rect(270, y, col2Width, rowHeight);
+
+    // Column 1
+    pdf.text(row[0], 60, y + 25);
+
+    // Column 2
+    pdf.setFont(undefined, "normal");
+    pdf.text(wrappedCol2, 280, y + 25);
+
+    // Move Y for next row
+    y += rowHeight;
   });
 
   // ---------------------------
   // Footer
   // ---------------------------
+  y += 40;
   pdf.setFont(undefined, "normal");
-  pdf.text(
-    "Thank you for your support and cooperation.",
-    50,
-    tableTop + 4 * rowHeight + 40
-  );
-  pdf.text("Sincerely,", 50, tableTop + 4 * rowHeight + 70);
+  pdf.text("Thank you for your support and cooperation.", 50, y);
+  y += 30;
+  pdf.text("Sincerely,", 50, y);
 
+  y += 40;
   pdf.setFont(undefined, "bold");
-  pdf.text("Manas Kharel", 50, tableTop + 4 * rowHeight + 110);
-  pdf.text("Finance Department", 50, tableTop + 4 * rowHeight + 130);
+  pdf.text("Manas Kharel", 50, y);
+  pdf.text("Finance Department", 50, y + 20);
 
   return pdf;
 }
