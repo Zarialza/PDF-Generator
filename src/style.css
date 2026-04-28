@@ -1,55 +1,518 @@
-body {
-  font-family: Arial, sans-serif;
-  padding: 20px;
-  background: #f9f9f9;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* ===========================
+   Design Tokens
+   =========================== */
+:root {
+  --navy-900: #0a0e2a;
+  --navy-800: #111640;
+  --navy-700: #1a1f5e;
+  --navy-600: #252b7a;
+  --teal-500: #00b4d8;
+  --teal-400: #48cae4;
+  --teal-300: #90e0ef;
+  --cyan-glow: rgba(0, 180, 216, 0.15);
+  --surface: #f4f6fb;
+  --surface-card: #ffffff;
+  --text-primary: #1a1a2e;
+  --text-secondary: #5a5f7a;
+  --text-muted: #9ca3af;
+  --border: #e2e5f1;
+  --success: #22c55e;
+  --success-hover: #16a34a;
+  --shadow-sm: 0 1px 3px rgba(10, 14, 42, 0.06);
+  --shadow-md: 0 4px 16px rgba(10, 14, 42, 0.08);
+  --shadow-lg: 0 8px 32px rgba(10, 14, 42, 0.12);
+  --shadow-glow: 0 0 24px rgba(0, 180, 216, 0.15);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-form {
-  margin-bottom: 20px;
+/* ===========================
+   Reset & Base
+   =========================== */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--surface);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===========================
+   Landing Page
+   =========================== */
+.landing {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  width: 60%;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background:
+    radial-gradient(ellipse at 20% 0%, var(--cyan-glow) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba(0, 180, 216, 0.08) 0%, transparent 50%),
+    var(--surface);
 }
 
-input,
-button {
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 10px;
+.landing-logo {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 1rem;
+  border-radius: var(--radius-md);
+  object-fit: contain;
 }
 
-#submitbtn {
-  background-color: #4caf50;
-  color: white;
-  border: none;
+.landing h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--navy-800);
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.02em;
+}
+
+.landing .subtitle {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-bottom: 2.5rem;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 600px;
+}
+
+.card-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.card {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  transition: var(--transition);
   cursor: pointer;
-  width: 40%;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--navy-700), var(--teal-500));
+  opacity: 0;
+  transition: var(--transition);
+}
+
+.card:hover {
+  border-color: var(--teal-400);
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
+  transform: translateY(-2px);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.card-icon.emi {
+  background: linear-gradient(135deg, var(--navy-700), var(--navy-600));
+  color: var(--teal-300);
+}
+
+.card-icon.company {
+  background: linear-gradient(135deg, var(--teal-500), var(--teal-400));
+  color: white;
+}
+
+.card h2 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  color: var(--text-primary);
+}
+
+.card p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.card .arrow {
+  position: absolute;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%) translateX(-4px);
+  opacity: 0;
+  transition: var(--transition);
+  color: var(--teal-500);
+  font-size: 1.1rem;
+}
+
+.card:hover .arrow {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+/* ===========================
+   Generator Page Layout
+   =========================== */
+.page-wrapper {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 3rem;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.page-header h1 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--navy-800);
+  letter-spacing: -0.02em;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+}
+
+.back-link:hover {
+  color: var(--teal-500);
+  background: var(--cyan-glow);
+}
+
+/* ===========================
+   Form
+   =========================== */
+.form-card {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.form-group input {
+  padding: 0.7rem 0.9rem;
+  font-size: 0.925rem;
+  font-family: inherit;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-primary);
+  transition: var(--transition);
+  outline: none;
+}
+
+.form-group input::placeholder {
+  color: var(--text-muted);
+}
+
+.form-group input:focus {
+  border-color: var(--teal-500);
+  box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.1);
+  background: white;
+}
+
+/* ===========================
+   Buttons
+   =========================== */
+.btn-row {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.4rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: inherit;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition);
+  outline: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--navy-700), var(--navy-800));
+  color: white;
+}
+
+.btn-primary:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary {
+  background: var(--surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+  background: var(--border);
+}
+
+.btn-secondary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Loading spinner inside button */
+.btn .spinner {
+  display: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+.btn.loading .spinner {
+  display: block;
+}
+
+.btn.loading .btn-label {
+  display: none;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ===========================
+   PDF Preview
+   =========================== */
+.preview-section {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.preview-header span {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.preview-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.preview-actions .btn {
+  padding: 0.4rem 0.85rem;
+  font-size: 0.8rem;
+}
+
+.preview-body {
+  position: relative;
+  background: #e8eaf0;
+  min-height: 200px;
+}
+
+.preview-body iframe {
+  width: 100%;
+  height: 600px;
+  border: none;
+  display: block;
+}
+
+.preview-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.preview-empty .empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+  opacity: 0.5;
+}
+
+.preview-empty p {
+  font-size: 0.9rem;
+}
+
+.preview-body.has-pdf .preview-empty {
+  display: none;
+}
+
+/* ===========================
+   Footer
+   =========================== */
+.page-footer {
+  text-align: center;
+  margin-top: 2.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* ===========================
+   Responsive
+   =========================== */
+@media (max-width: 640px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .btn-row {
+    flex-direction: column;
+  }
+
+  .btn-row .btn {
+    width: 100%;
+  }
+
+  .preview-body iframe {
+    height: 400px;
+  }
+
+  .landing h1 {
+    font-size: 1.4rem;
+  }
+}
+
+/* ===========================
+   Offscreen helpers (PDF generation)
+   =========================== */
+#quotationHTML {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
 }
 
 #quotationOutput {
   position: absolute;
   top: -9999px;
   left: -9999px;
-  width: 794px; /* A4 width at 96 DPI */
-  height: 1123px; /* A4 height at 96 DPI */
+  width: 794px;
+  height: 1123px;
   padding: 40px;
   box-sizing: border-box;
   background: white url("/letterhead.png") no-repeat center top;
   background-size: cover;
-}
-
-#quotationOutput div {
-  margin-top: 150px; /* Adjust based on your header design */
-}
-
-#pdfContainer {
-  margin-top: 20px;
-}
-
-.buttons {
-  margin-top: 10px;
-  display: flex;
-  gap: 10px;
-  justify-content: center;
 }

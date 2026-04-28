@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EMI Quotation Generator — Sinja Commerce</title>
+  <meta name="description" content="Generate EMI financing quotations on company letterhead." />
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <div class="page-wrapper">
+    <header class="page-header">
+      <h1>EMI Quotation</h1>
+      <a href="/index.html" class="back-link" id="back-home">← Back</a>
+    </header>
+
+    <div class="form-card">
+      <form id="emiForm">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="customerName">Customer Name</label>
+            <input id="customerName" type="text" placeholder="e.g. Ram Bahadur" required />
+          </div>
+          <div class="form-group">
+            <label for="bank">Preferred Bank</label>
+            <input id="bank" type="text" placeholder="e.g. NIC Asia" required />
+          </div>
+          <div class="form-group full-width">
+            <label for="productName">Product Name</label>
+            <input id="productName" type="text" placeholder="e.g. iPhone 15 Pro Max" required />
+          </div>
+          <div class="form-group">
+            <label for="productPrice">Product Price (NPR)</label>
+            <input id="productPrice" type="number" min="1" placeholder="e.g. 250000" required />
+          </div>
+          <div class="form-group">
+            <label for="downpayment">Downpayment (NPR)</label>
+            <input id="downpayment" type="number" min="0" placeholder="e.g. 50000" required />
+          </div>
+          <div class="form-group">
+            <label for="tenure">EMI Tenure (months)</label>
+            <input id="tenure" type="number" min="1" max="60" placeholder="e.g. 12" required />
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button type="submit" id="submitbtn" class="btn btn-primary">
+            <span class="spinner"></span>
+            <span class="btn-label">Generate Quotation</span>
+          </button>
+          <button type="button" id="downloadBtn" class="btn btn-secondary" disabled>
+            ↓ Download PDF
+          </button>
+          <button type="button" id="printBtn" class="btn btn-secondary" disabled>
+            🖨 Print
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="preview-section">
+      <div class="preview-header">
+        <span>Preview</span>
+      </div>
+      <div class="preview-body" id="previewBody">
+        <div class="preview-empty">
+          <div class="empty-icon">📋</div>
+          <p>Fill the form and click <strong>Generate Quotation</strong> to preview.</p>
+        </div>
+        <iframe id="pdfPreview"></iframe>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      © 2025 Sinja Commerce Pvt. Ltd.
+    </div>
+  </div>
+
+  <div id="quotationHTML" style="position: absolute; left: -9999px; top: -9999px"></div>
+  <div id="quotationOutput" class="letterhead-bg"></div>
+
+  <script type="module" src="/src/emi-form.js"></script>
+</body>
+</html>

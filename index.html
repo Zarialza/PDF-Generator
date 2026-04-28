@@ -3,49 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Sinja Commerce — Quotation Generator</title>
+  <meta name="description" content="Generate professional EMI and company quotations for Sinja Commerce Pvt. Ltd.">
+  <link rel="stylesheet" href="/src/style.css" />
 </head>
 <body>
-  <h1>Hello welcome to Sinja's PDF generator</h1>
-  <div class="container">
-    
-    <a href="genone.html"> 
-      <div class="btn">
-        EMI Qoutation Generator
-      </div>
-    </a>
-    <a href="gentwo.html"> 
-      <div class="btn">
-        Company Qoutation Generator
-      </div>
-    </a>
+  <div class="landing">
+    <h1>Quotation Generator</h1>
+    <p class="subtitle">Sinja Commerce Pvt. Ltd.</p>
+
+    <div class="card-grid">
+      <a href="emi-quotation.html" class="card-link" id="emi-card">
+        <div class="card">
+          <div class="card-icon emi">📄</div>
+          <h2>EMI Quotation</h2>
+          <p>Generate bank-oriented EMI financing quotations for customers.</p>
+          <span class="arrow">→</span>
+        </div>
+      </a>
+      <a href="company-quotation.html" class="card-link" id="company-card">
+        <div class="card">
+          <div class="card-icon company">🏢</div>
+          <h2>Company Quotation</h2>
+          <p>Generate direct quotations for company-to-company transactions.</p>
+          <span class="arrow">→</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="page-footer">
+      © 2025 Sinja Commerce Pvt. Ltd.
+    </div>
   </div>
 </body>
-<style>
-  body{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-  }
-  .btn{
-    border: 1px solid black;
-    padding: 20px 40px;
-    border-radius: 10px;
-    transition: 1s;
-    cursor: pointer;
-  }
-  .btn:hover{
-    background-color: rgb(213, 213, 213);
-  }
-  a{
-    text-decoration: none;
-    color: black;
-  }
-  .container{
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-  }
-</style>
 </html>
