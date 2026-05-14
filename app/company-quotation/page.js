@@ -3,6 +3,7 @@
 import { useState } from "react";
 import QuotationForm from "@/components/QuotationForm";
 import { generateCompanyPDF } from "@/lib/company-pdf";
+import { logGeneration } from "@/lib/logger";
 
 export default function CompanyQuotationPage() {
   const [productCount, setProductCount] = useState(1);
@@ -78,6 +79,15 @@ export default function CompanyQuotationPage() {
       price: parseFloat(productPrices[i]),
       quantity: parseInt(quantities[i]),
     }));
+
+    const total = products.reduce((sum, p) => sum + p.price * p.quantity, 0);
+
+    // Log to DB
+    logGeneration({
+      type: "Company",
+      recipient: data.companyname,
+      amount: total,
+    });
 
     return generateCompanyPDF({
       ...data,

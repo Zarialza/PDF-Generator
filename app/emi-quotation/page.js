@@ -2,6 +2,7 @@
 
 import QuotationForm from "@/components/QuotationForm";
 import { generateEmiPDF } from "@/lib/emi-pdf";
+import { logGeneration } from "@/lib/logger";
 
 export default function EmiQuotationPage() {
   const fields = [
@@ -55,13 +56,22 @@ export default function EmiQuotationPage() {
     return null;
   };
 
+  const handleGeneratePDF = (data) => {
+    logGeneration({
+      type: "EMI",
+      recipient: data.customerName,
+      amount: data.productPrice,
+    });
+    return generateEmiPDF(data);
+  };
+
   return (
     <QuotationForm
       title="EMI Quotation"
       pdfFilename="EMI_Quotation.pdf"
       fields={fields}
       validate={validate}
-      generatePDF={generateEmiPDF}
+      generatePDF={handleGeneratePDF}
     />
   );
 }
