@@ -12,7 +12,8 @@ import Footer from "@/components/Footer";
  * @param {string}   props.pdfFilename - Download filename (e.g. "EMI_Quotation.pdf")
  * @param {Array}    props.fields      - Array of field config objects { id, label, type, placeholder, required, fullWidth, min, max }
  * @param {Function} props.validate    - Optional (formData) => errorString | null
- * @param {Function} props.generatePDF - Async (formData) => jsPDF instance
+ * @param {Function} props.generatePDF - Async (data, formData) => jsPDF instance
+ * @param {React.ReactNode} props.children - Optional extra fields
  */
 export default function QuotationForm({
   title,
@@ -20,6 +21,7 @@ export default function QuotationForm({
   fields,
   validate,
   generatePDF,
+  children,
 }) {
   const [loading, setLoading] = useState(false);
   const [hasPdf, setHasPdf] = useState(false);
@@ -29,20 +31,18 @@ export default function QuotationForm({
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = {};
     const form = e.target;
+    const formData = new FormData(form);
+    const data = {};
+
     fields.forEach((field) => {
-      const value = form.elements[field.id]?.value;
-      if (field.type === "number") {
-        formData[field.id] = parseFloat(value);
-      } else {
-        formData[field.id] = value;
-      }
+      const val = formData.get(field.id);
+      data[field.id] = field.type === "number" ? parseFloat(val) : val;
     });
 
     // Optional validation
     if (validate) {
-      const error = validate(formData);
+      const error = validate(data);
       if (error) {
         alert(error);
         return;
@@ -52,7 +52,7 @@ export default function QuotationForm({
     setLoading(true);
 
     try {
-      const pdf = await generatePDF(formData);
+      const pdf = await generatePDF(data, formData);
       const blob = pdf.output("blob");
       const url = URL.createObjectURL(blob);
 
@@ -112,6 +112,8 @@ export default function QuotationForm({
               </div>
             ))}
           </div>
+
+          {children}
 
           <div className="btn-row">
             <button
